@@ -13,6 +13,8 @@ class ViewController: UIViewController {
     //MARK:- Properties
     var countryList = [[String : Any]]()
     
+    @IBOutlet weak var tableView: UITableView!
+    
     //MARK: Initializers
         
     override func viewDidLoad() {
@@ -38,6 +40,9 @@ class ViewController: UIViewController {
             do{
                 self.countryList = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [[String : Any]]
                 
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
                 for (key ,value) in self.countryList.enumerated() {
                     print("\(key) and \(value)")
                 }
@@ -57,3 +62,34 @@ class ViewController: UIViewController {
 
 }
 
+extension ViewController : UITableViewDelegate,UITableViewDataSource{
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    
+        return self.countryList.count
+    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 90
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CountryCell
+        
+        let item = countryList[indexPath.row]
+        
+        cell.capitalLbl.text = item["capital"] as? String
+        cell.regionLbl.text = item["region"] as? String
+        cell.name.text = item["name"] as? String
+        
+        
+        return cell
+        
+    }
+    
+    
+    
+    
+}

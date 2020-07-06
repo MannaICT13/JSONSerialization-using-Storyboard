@@ -13,12 +13,7 @@ struct Country : Codable  {
     var name : String?
     var capital : String?
     var region : String?
-    var languages : [Languages]
 
     
 }
- struct Languages  : Codable {
-      var name : String?
-      var nativeName : String?
-  }
- 
+
